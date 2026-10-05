@@ -1,0 +1,7 @@
+{"op":"add","path":"/root","value":"albums-panel"}
+{"op":"add","path":"/state","value":{"albums":[],"albumsLoading":true}}
+{"op":"add","path":"/elements/albums-panel","value":{"type":"Panel","props":{"header":"Albums"},"children":["reload-button","albums-loader","table"],"on":{"mount":{"action":"fetchData","params":{"url":"https://jsonplaceholder.typicode.com/albums","statePath":"/albums","loadingPath":"/albumsLoading"}}}}}
+{"op":"add","path":"/elements/reload-button","value":{"type":"Button","props":{"label":"Reload","icon":"pi pi-refresh","size":"small","outlined":true,"loading":{"$state":"/albumsLoading"}},"children":[],"on":{"click":{"action":"fetchData","params":{"url":"https://jsonplaceholder.typicode.com/albums","statePath":"/albums","loadingPath":"/albumsLoading"}}}}}
+{"op":"add","path":"/elements/albums-loader","value":{"type":"ProgressSpinner","props":{"aria-label":"Loading albums","style":{"display":"block","margin":"2rem auto"}},"children":[],"visible":{"$state":"/albumsLoading"}}}
+{"op":"add","path":"/elements/table","value":{"type":"DataTable","props":{"value":{"$state":"/albums"}},"children":["title-col"],"visible":{"$state":"/albumsLoading","not":true}}}
+{"op":"add","path":"/elements/title-col","value":{"type":"Column","props":{"field":"title","header":"Title"},"children":[]}}

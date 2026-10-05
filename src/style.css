@@ -1,0 +1,240 @@
+:root {
+  font-family:
+    Inter, "Avenir Next", Avenir, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  color: #14212b;
+  background: #f5f7fa;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+}
+
+.page-shell {
+  padding: 0 0 88px;
+}
+
+.page-header {
+  width: min(100% - 40px, 960px);
+  margin: 0 auto 36px;
+}
+
+.eyebrow {
+  margin: 0 0 12px;
+  color: #536777;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+}
+
+.page-header h1 {
+  max-width: 700px;
+  margin: 0;
+  font-size: clamp(32px, 5vw, 48px);
+  font-weight: 650;
+  letter-spacing: -0.045em;
+  line-height: 1.08;
+}
+
+.lede {
+  max-width: 620px;
+  margin: 16px 0 0;
+  color: #536777;
+  font-size: 16px;
+  line-height: 1.65;
+}
+
+.source-panel {
+  overflow: hidden;
+  border: 1px solid #dbe3e9;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 12px 40px rgb(31 54 72 / 5%);
+}
+
+.preview-panel {
+  width: 100%;
+  margin-bottom: 40px;
+}
+
+.section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 22px 26px;
+  border-bottom: 1px solid #e8edf1;
+}
+
+.section-heading .eyebrow {
+  margin-bottom: 5px;
+}
+
+.section-heading h2 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 650;
+  letter-spacing: -0.015em;
+}
+
+.status-pill {
+  padding: 6px 10px;
+  border: 1px solid #d5e7df;
+  border-radius: 999px;
+  background: #f1f8f4;
+  color: #276148;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.render-area {
+  width: 100%;
+}
+
+.render-area > * {
+  width: 100%;
+}
+
+.pokedex-search {
+  width: min(100%, 28rem);
+}
+
+.source-panel {
+  width: min(100% - 40px, 960px);
+  margin: 0 auto;
+}
+
+.source-input {
+  display: block;
+  width: 100%;
+  height: min(70vh, 900px);
+  min-height: 480px;
+  max-height: 80vh;
+  resize: vertical;
+  border: 0;
+  outline: 0;
+  padding: 24px 26px 28px;
+  background: #101b24;
+  color: #d8e5ed;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 12px;
+  line-height: 1.8;
+  tab-size: 2;
+}
+
+.source-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.load-spec-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 6px 10px;
+  border: 1px solid #d5e0e6;
+  border-radius: 999px;
+  background: #fff;
+  color: #284353;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.load-spec-button:hover {
+  background: #f3f7f9;
+}
+
+.file-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  clip-path: inset(50%);
+}
+
+.source-hint {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin: 0;
+  padding: 12px 26px;
+  border-bottom: 1px solid #263641;
+  background: #15232d;
+  color: #bdccd5;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.source-input:focus {
+  box-shadow: inset 0 0 0 2px #46a0d8;
+}
+
+.status-pill--error {
+  border-color: #edc9c5;
+  background: #fff3f2;
+  color: #9f2d27;
+}
+
+.source-error {
+  margin: 0;
+  padding: 12px 26px;
+  border-top: 1px solid #edc9c5;
+  background: #fff3f2;
+  color: #9f2d27;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+@media (max-width: 600px) {
+  .page-shell {
+    padding: 48px 0 64px;
+  }
+
+  .page-header,
+  .source-panel {
+    width: min(100% - 28px, 960px);
+  }
+
+  .section-heading {
+    padding: 18px;
+  }
+
+  .source-actions {
+    align-items: flex-end;
+  }
+
+  .source-input {
+    height: 60vh;
+    min-height: 360px;
+    padding: 18px;
+    font-size: 11px;
+  }
+
+  .source-hint {
+    padding: 12px 18px;
+  }
+
+  .source-error {
+    padding: 12px 18px;
+  }
+
+}
