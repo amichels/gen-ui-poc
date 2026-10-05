@@ -1,5 +1,4 @@
 import { camelize, h, toHandlerKey, type Component, type Slots } from "vue";
-import * as PrimeVue from "primevue";
 import type { StateStore } from "@json-render/core";
 import {
   useBoundProp,
@@ -8,7 +7,7 @@ import {
   type EventHandle,
 } from "@json-render/vue";
 import type { AppCatalog } from "./catalog";
-import { primeVueComponentNames } from "./primevue-components";
+import { shadcnComponents, shadcnComponentNames } from "./shadcn";
 
 type FetchDataParams = {
   url: string;
@@ -18,6 +17,7 @@ type FetchDataParams = {
   statePath?: string;
   loadingPath?: string;
   errorPath?: string;
+  jsonPath?: string;
 };
 
 type ShowProductDetailsParams = {
@@ -29,7 +29,7 @@ export const createActions = (store: StateStore) => {
     const params = rawParams as FetchDataParams | undefined;
     if (!params?.url) throw new Error("fetchData requires a url");
 
-    const { url, method = "GET", headers, body, statePath, loadingPath, errorPath } = params;
+    const { url, method = "GET", headers, body, statePath, loadingPath, errorPath, jsonPath } = params;
     if (loadingPath) store.set(loadingPath, true);
     if (errorPath) store.set(errorPath, null);
 
@@ -46,6 +46,7 @@ export const createActions = (store: StateStore) => {
       const isJson = response.headers.get("content-type")?.includes("application/json");
       const data = isJson ? await response.json() : await response.text();
       if (statePath) store.set(statePath, data);
+      if (jsonPath) store.set(jsonPath, JSON.stringify(data, null, 2));
       return data;
     } catch (error) {
       if (errorPath) {
@@ -59,20 +60,27 @@ export const createActions = (store: StateStore) => {
 
   const showProductDetails = async (rawParams?: Record<string, unknown>) => {
     const { product } = (rawParams ?? {}) as ShowProductDetailsParams;
-    store.set("/selectedProduct", product ?? null);
     store.set("/selectedProductJson", JSON.stringify(product ?? null, null, 2));
-    store.set("/productDialogVisible", true);
+    store.set("/detailsOpen", true);
   };
 
   return { fetchData, showProductDetails } satisfies Actions<AppCatalog>;
 };
 
-// PrimeVue events that can be bound to actions via an element's `on` map.
-const forwardedEvents = ["click", "change", "value-change", "update:modelValue", "page", "sort", "filter"];
+// Events that can be bound to actions via an element's `on` map.
+const forwardedEvents = [
+  "click",
+  "change",
+  "input",
+  "select",
+  "value-change",
+  "update:modelValue",
+  "update:open",
+];
 
-export const createComponents = (store: StateStore): Components<AppCatalog> =>
+export const createComponents = (_store: StateStore): Components<AppCatalog> =>
   Object.fromEntries(
-    primeVueComponentNames.map((name) => [
+    shadcnComponentNames.map((name) => [
       name,
       ({
         props,
@@ -97,25 +105,6 @@ export const createComponents = (store: StateStore): Components<AppCatalog> =>
         const mount = on("mount");
         if (mount.bound) eventHandlers.onVnodeMounted = mount.emit;
 
-        if (name === "Column") {
-          const rowContextPath = boundProps.rowContextPath;
-          delete boundProps.rowContextPath;
-
-          if (typeof rowContextPath === "string" && slots.body) {
-            return h(PrimeVue.Column as Component, boundProps, {
-              ...slots,
-              body: ({ data }: { data: unknown }) =>
-                h(
-                  "span",
-                  {
-                    onClickCapture: () => store.set(rowContextPath, data),
-                  },
-                  slots.body?.(),
-                ),
-            });
-          }
-        }
-
         for (const [propName, bindingPath] of Object.entries(bindings ?? {})) {
           const [value, setValue] = useBoundProp(props[propName], bindingPath);
           boundProps[propName] = value;
@@ -133,7 +122,7 @@ export const createComponents = (store: StateStore): Components<AppCatalog> =>
             : update;
         }
 
-        return h(PrimeVue[name] as Component, { ...boundProps, ...handlers }, slots);
+        return h(shadcnComponents[name] as Component, { ...boundProps, ...handlers }, slots);
       },
     ]),
   ) as unknown as Components<AppCatalog>;

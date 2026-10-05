@@ -1,240 +1,139 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-heading: var(--font-sans);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
 :root {
-  font-family:
-    Inter, "Avenir Next", Avenir, -apple-system, BlinkMacSystemFont, "Segoe UI",
-    sans-serif;
-  color: #14212b;
-  background: #f5f7fa;
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  --radius: 0.625rem;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
 }
 
-* {
-  box-sizing: border-box;
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
 }
 
-body {
-  min-width: 320px;
-  min-height: 100vh;
-  margin: 0;
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
 }
 
 .page-shell {
-  padding: 0 0 88px;
+  padding: 32px 24px 88px;
 }
 
-.page-header {
-  width: min(100% - 40px, 960px);
-  margin: 0 auto 36px;
-}
-
-.eyebrow {
-  margin: 0 0 12px;
-  color: #536777;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-}
-
-.page-header h1 {
-  max-width: 700px;
-  margin: 0;
-  font-size: clamp(32px, 5vw, 48px);
-  font-weight: 650;
-  letter-spacing: -0.045em;
-  line-height: 1.08;
-}
-
-.lede {
-  max-width: 620px;
-  margin: 16px 0 0;
-  color: #536777;
-  font-size: 16px;
-  line-height: 1.65;
-}
-
-.source-panel {
-  overflow: hidden;
-  border: 1px solid #dbe3e9;
-  border-radius: 18px;
-  background: #fff;
-  box-shadow: 0 12px 40px rgb(31 54 72 / 5%);
-}
-
-.preview-panel {
-  width: 100%;
-  margin-bottom: 40px;
-}
-
-.section-heading {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-  padding: 22px 26px;
-  border-bottom: 1px solid #e8edf1;
-}
-
-.section-heading .eyebrow {
-  margin-bottom: 5px;
-}
-
-.section-heading h2 {
-  margin: 0;
-  font-size: 16px;
-  font-weight: 650;
-  letter-spacing: -0.015em;
-}
-
-.status-pill {
-  padding: 6px 10px;
-  border: 1px solid #d5e7df;
-  border-radius: 999px;
-  background: #f1f8f4;
-  color: #276148;
-  font-size: 12px;
-  font-weight: 600;
-  white-space: nowrap;
-}
-
+.preview-panel,
 .render-area {
   width: 100%;
+  margin: 0 auto;
 }
 
 .render-area > * {
   width: 100%;
-}
-
-.pokedex-search {
-  width: min(100%, 28rem);
-}
-
-.source-panel {
-  width: min(100% - 40px, 960px);
-  margin: 0 auto;
-}
-
-.source-input {
-  display: block;
-  width: 100%;
-  height: min(70vh, 900px);
-  min-height: 480px;
-  max-height: 80vh;
-  resize: vertical;
-  border: 0;
-  outline: 0;
-  padding: 24px 26px 28px;
-  background: #101b24;
-  color: #d8e5ed;
-  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
-  font-size: 12px;
-  line-height: 1.8;
-  tab-size: 2;
-}
-
-.source-actions {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-}
-
-.load-spec-button {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  min-height: 34px;
-  padding: 6px 10px;
-  border: 1px solid #d5e0e6;
-  border-radius: 999px;
-  background: #fff;
-  color: #284353;
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.load-spec-button:hover {
-  background: #f3f7f9;
-}
-
-.file-input {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  clip-path: inset(50%);
-}
-
-.source-hint {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 8px 16px;
-  margin: 0;
-  padding: 12px 26px;
-  border-bottom: 1px solid #263641;
-  background: #15232d;
-  color: #bdccd5;
-  font-size: 12px;
-  line-height: 1.5;
-}
-
-.source-input:focus {
-  box-shadow: inset 0 0 0 2px #46a0d8;
-}
-
-.status-pill--error {
-  border-color: #edc9c5;
-  background: #fff3f2;
-  color: #9f2d27;
-}
-
-.source-error {
-  margin: 0;
-  padding: 12px 26px;
-  border-top: 1px solid #edc9c5;
-  background: #fff3f2;
-  color: #9f2d27;
-  font-size: 12px;
-  line-height: 1.5;
-}
-
-@media (max-width: 600px) {
-  .page-shell {
-    padding: 48px 0 64px;
-  }
-
-  .page-header,
-  .source-panel {
-    width: min(100% - 28px, 960px);
-  }
-
-  .section-heading {
-    padding: 18px;
-  }
-
-  .source-actions {
-    align-items: flex-end;
-  }
-
-  .source-input {
-    height: 60vh;
-    min-height: 360px;
-    padding: 18px;
-    font-size: 11px;
-  }
-
-  .source-hint {
-    padding: 12px 18px;
-  }
-
-  .source-error {
-    padding: 12px 18px;
-  }
-
 }
