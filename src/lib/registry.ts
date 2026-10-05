@@ -17,6 +17,7 @@ type FetchDataParams = {
   statePath?: string;
   loadingPath?: string;
   errorPath?: string;
+  successPath?: string;
   jsonPath?: string;
 };
 
@@ -25,9 +26,10 @@ export const createActions = (store: StateStore) => {
     const params = rawParams as FetchDataParams | undefined;
     if (!params?.url) throw new Error("fetchData requires a url");
 
-    const { url, method = "GET", headers, body, statePath, loadingPath, errorPath, jsonPath } = params;
+    const { url, method = "GET", headers, body, statePath, loadingPath, errorPath, successPath, jsonPath } = params;
     if (loadingPath) store.set(loadingPath, true);
     if (errorPath) store.set(errorPath, null);
+    if (successPath) store.set(successPath, false);
 
     try {
       const response = await fetch(url, {
@@ -43,6 +45,7 @@ export const createActions = (store: StateStore) => {
       const data = isJson ? await response.json() : await response.text();
       if (statePath) store.set(statePath, data);
       if (jsonPath) store.set(jsonPath, JSON.stringify(data, null, 2));
+      if (successPath) store.set(successPath, true);
       return data;
     } catch (error) {
       if (errorPath) {

@@ -18,6 +18,7 @@ const descriptions: Partial<Record<ShadcnComponentName, string>> = {
   Heading: "Heading. Pass the string via `text`; `level` (1-4) selects h1-h4.",
   Stack: "Vertical flex container. `gap` is a spacing step (1-8); also accepts `class`.",
   Row: "Horizontal flex container with centered items. `gap`, `wrap`, `class`.",
+  Icon: "Lucide icon by name. `name`: Trash2 | Eye | Search | Check | X | Plus | RefreshCw | Loader2. Use `class` for size/color.",
 
   Button: "Button. `variant`: default | destructive | outline | secondary | ghost | link; `size`: default | sm | lg | icon. Put a Text child inside for the label.",
   Card: "Rounded card container. Compose with CardHeader, CardTitle, CardDescription, CardContent, CardFooter.",
@@ -119,10 +120,11 @@ export const catalog = schema.createCatalog({
         statePath: z.string().optional(),
         loadingPath: z.string().optional(),
         errorPath: z.string().optional(),
+        successPath: z.string().optional(),
         jsonPath: z.string().optional(),
       }),
       description:
-        "Call an HTTP endpoint. Stores the parsed response at statePath, a pretty-printed JSON string at jsonPath, toggles loadingPath while pending, and writes the error message to errorPath on failure.",
+        "Call an HTTP endpoint. Stores the parsed response at statePath, a pretty-printed JSON string at jsonPath, toggles loadingPath while pending, and writes the error message to errorPath on failure. Sets successPath to true on a successful response.",
     },
   },
 });
