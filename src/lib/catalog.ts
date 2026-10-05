@@ -18,6 +18,7 @@ const descriptions: Partial<Record<ShadcnComponentName, string>> = {
   Heading: "Heading. Pass the string via `text`; `level` (1-4) selects h1-h4.",
   Stack: "Vertical flex container. `gap` is a spacing step (1-8); also accepts `class`.",
   Row: "Horizontal flex container with centered items. `gap`, `wrap`, `class`.",
+  Form: "Native <form> wrapper. Bind `on.submit` to run an action on submit (default is prevented). Put a Button with type \"submit\" inside.",
   Icon: "Lucide icon by name. `name`: Trash2 | Eye | Search | Check | X | Plus | RefreshCw | Loader2. Use `class` for size/color.",
 
   Button: "Button. `variant`: default | destructive | outline | secondary | ghost | link; `size`: default | sm | lg | icon. Put a Text child inside for the label.",
@@ -76,7 +77,7 @@ const descriptions: Partial<Record<ShadcnComponentName, string>> = {
   Popover: "Popover root. Children: PopoverTrigger and PopoverContent.",
   Tooltip: "Tooltip root. Children: TooltipTrigger and TooltipContent.",
 
-  Alert: "Inline alert. `variant`: default | destructive. Children: AlertTitle, AlertDescription.",
+  Alert: "Inline alert. `variant`: default | destructive | success. Children: AlertTitle, AlertDescription.",
   AlertTitle: "Alert heading (add a Text child).",
   AlertDescription: "Alert body text.",
   Badge: "Small status pill. `variant`: default | secondary | destructive | outline. Add a Text child.",

@@ -64,7 +64,7 @@ const { registry } = defineRegistry(catalog, { components, actions });
 </script>
 
 <template>
-  <main class="dark">
+  <main class="dark" style="background-color: black">
     <JSONUIProvider :registry="registry" :store="store" :handlers="actions">
       <Renderer :spec="activeSpec" :registry="registry" />
     </JSONUIProvider>

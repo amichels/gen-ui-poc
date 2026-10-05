@@ -69,6 +69,7 @@ const forwardedEvents = [
   "value-change",
   "update:modelValue",
   "update:open",
+  "submit",
 ];
 
 export const createComponents = (_store: StateStore): Components<AppCatalog> =>
@@ -92,7 +93,16 @@ export const createComponents = (_store: StateStore): Components<AppCatalog> =>
 
         for (const event of forwardedEvents) {
           const handle = on(event);
-          if (handle.bound) eventHandlers[toHandlerKey(camelize(event))] = handle.emit;
+          if (!handle.bound) continue;
+          const key = toHandlerKey(camelize(event));
+          if (event === "submit" || handle.shouldPreventDefault) {
+            eventHandlers[key] = (domEvent: Event) => {
+              domEvent.preventDefault();
+              handle.emit();
+            };
+          } else {
+            eventHandlers[key] = handle.emit;
+          }
         }
 
         // `on.enter` fires only when the user presses Enter.
