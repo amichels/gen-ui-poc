@@ -124,11 +124,6 @@ export const catalog = schema.createCatalog({
       description:
         "Call an HTTP endpoint. Stores the parsed response at statePath, a pretty-printed JSON string at jsonPath, toggles loadingPath while pending, and writes the error message to errorPath on failure.",
     },
-    showProductDetails: {
-      params: z.object({ product: z.unknown() }),
-      description:
-        "Select a product, format its complete record as JSON, and open its details dialog.",
-    },
   },
 });
 

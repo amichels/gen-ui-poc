@@ -20,10 +20,6 @@ type FetchDataParams = {
   jsonPath?: string;
 };
 
-type ShowProductDetailsParams = {
-  product?: unknown;
-};
-
 export const createActions = (store: StateStore) => {
   const fetchData = async (rawParams?: Record<string, unknown>) => {
     const params = rawParams as FetchDataParams | undefined;
@@ -58,13 +54,7 @@ export const createActions = (store: StateStore) => {
     }
   };
 
-  const showProductDetails = async (rawParams?: Record<string, unknown>) => {
-    const { product } = (rawParams ?? {}) as ShowProductDetailsParams;
-    store.set("/selectedProductJson", JSON.stringify(product ?? null, null, 2));
-    store.set("/detailsOpen", true);
-  };
-
-  return { fetchData, showProductDetails } satisfies Actions<AppCatalog>;
+  return { fetchData } satisfies Actions<AppCatalog>;
 };
 
 // Events that can be bound to actions via an element's `on` map.
