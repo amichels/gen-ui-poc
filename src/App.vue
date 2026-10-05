@@ -64,14 +64,10 @@ const { registry } = defineRegistry(catalog, { components, actions });
 </script>
 
 <template>
-  <main class="page-shell">
-    <section class="preview-panel" aria-label="Rendered UI">
-      <div class="render-area">
-        <JSONUIProvider :registry="registry" :store="store" :handlers="actions">
-          <Renderer :spec="activeSpec" :registry="registry" />
-        </JSONUIProvider>
-      </div>
-    </section>
+  <main class="dark">
+    <JSONUIProvider :registry="registry" :store="store" :handlers="actions">
+      <Renderer :spec="activeSpec" :registry="registry" />
+    </JSONUIProvider>
 
     <!-- <section class="source-panel" aria-labelledby="source-title">
       <div class="section-heading">

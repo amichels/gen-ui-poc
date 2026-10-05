@@ -28,8 +28,8 @@ const descriptions: Partial<Record<ShadcnComponentName, string>> = {
   CardFooter: "Card footer, usually holds actions.",
   CardAction: "Top-right action slot inside a card header.",
 
-  Input: "Single-line text input. Two-way bind with { \"$bindState\": \"/path\" } on `modelValue`.",
-  Textarea: "Multi-line text input. Bind with `modelValue`.",
+  Input: "Single-line text input. Two-way bind with { \"$bindState\": \"/path\" } on `modelValue`. Bind `on.enter` to run an action when Enter is pressed.",
+  Textarea: "Multi-line text input. Bind with `modelValue`. Bind `on.enter` to run an action when Enter is pressed.",
   Label: "Form label (add a Text child).",
   Checkbox: "Checkbox. Bind with `modelValue` (boolean).",
   Switch: "Toggle switch. Bind with `modelValue` (boolean).",

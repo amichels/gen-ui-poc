@@ -92,6 +92,14 @@ export const createComponents = (_store: StateStore): Components<AppCatalog> =>
           if (handle.bound) eventHandlers[toHandlerKey(camelize(event))] = handle.emit;
         }
 
+        // `on.enter` fires only when the user presses Enter.
+        const enter = on("enter");
+        if (enter.bound) {
+          eventHandlers.onKeydown = (event: KeyboardEvent) => {
+            if (event.key === "Enter") enter.emit();
+          };
+        }
+
         const mount = on("mount");
         if (mount.bound) eventHandlers.onVnodeMounted = mount.emit;
 

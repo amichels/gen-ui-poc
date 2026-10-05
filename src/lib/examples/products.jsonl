@@ -1,5 +1,5 @@
 {"op":"add","path":"/root","value":"products-card"}
-{"op":"add","path":"/state","value":{"productsResponse":{"products":[]},"productsLoading":true,"selectedProduct":null,"detailsOpen":false}}
+{"op":"add","path":"/state","value":{"searchQuery":"","productsResponse":{"products":[]},"productsLoading":true,"selectedProduct":null,"detailsOpen":false}}
 {"op":"add","path":"/elements/products-card","value":{"type":"Card","props":{"class":"w-full"},"children":["card-header","card-content","details-dialog"],"on":{"mount":{"action":"fetchData","params":{"url":"https://dummyjson.com/products?limit=0","statePath":"/productsResponse","loadingPath":"/productsLoading"}}}}}
 {"op":"add","path":"/elements/card-header","value":{"type":"CardHeader","props":{},"children":["card-title","card-description"]}}
 {"op":"add","path":"/elements/card-title","value":{"type":"CardTitle","props":{},"children":["card-title-text"]}}
@@ -7,9 +7,10 @@
 {"op":"add","path":"/elements/card-description","value":{"type":"CardDescription","props":{},"children":["card-desc-text"]}}
 {"op":"add","path":"/elements/card-desc-text","value":{"type":"Text","props":{"text":"Live data from dummyjson.com/products","variant":"muted"},"children":[]}}
 {"op":"add","path":"/elements/card-content","value":{"type":"CardContent","props":{},"children":["toolbar","products-table"]}}
-{"op":"add","path":"/elements/toolbar","value":{"type":"Row","props":{"gap":3,"class":"mb-4"},"children":["reload-button","products-loader"]}}
-{"op":"add","path":"/elements/reload-button","value":{"type":"Button","props":{"variant":"outline","size":"sm"},"children":["reload-label"],"on":{"click":{"action":"fetchData","params":{"url":"https://dummyjson.com/products?limit=0","statePath":"/productsResponse","loadingPath":"/productsLoading"}}}}}
-{"op":"add","path":"/elements/reload-label","value":{"type":"Text","props":{"text":"Reload"},"children":[]}}
+{"op":"add","path":"/elements/toolbar","value":{"type":"Row","props":{"gap":3,"class":"mb-4"},"children":["search-input","search-button","products-loader"]}}
+{"op":"add","path":"/elements/search-input","value":{"type":"Input","props":{"modelValue":{"$bindState":"/searchQuery"},"placeholder":"Search products…","aria-label":"Search products","class":"w-64"},"children":[],"on":{"enter":{"action":"fetchData","params":{"url":{"$template":"https://dummyjson.com/products/search?q=${/searchQuery}"},"statePath":"/productsResponse","loadingPath":"/productsLoading"}}}}}
+{"op":"add","path":"/elements/search-button","value":{"type":"Button","props":{"variant":"default","size":"sm"},"children":["search-label"],"on":{"click":{"action":"fetchData","params":{"url":{"$template":"https://dummyjson.com/products/search?q=${/searchQuery}"},"statePath":"/productsResponse","loadingPath":"/productsLoading"}}}}}
+{"op":"add","path":"/elements/search-label","value":{"type":"Text","props":{"text":"Search"},"children":[]}}
 {"op":"add","path":"/elements/products-loader","value":{"type":"Spinner","props":{"class":"size-5"},"children":[],"visible":{"$state":"/productsLoading"}}}
 {"op":"add","path":"/elements/products-table","value":{"type":"Table","props":{},"children":["table-header","table-body"],"visible":{"$state":"/productsLoading","not":true}}}
 {"op":"add","path":"/elements/table-header","value":{"type":"TableHeader","props":{},"children":["header-row"]}}
