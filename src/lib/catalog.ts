@@ -1,3 +1,4 @@
+import type { ComputedFunction } from "@json-render/core";
 import { schema } from "@json-render/vue/schema";
 import { z } from "zod";
 import { shadcnComponentNames, type ShadcnComponentName } from "./shadcn";
@@ -19,6 +20,7 @@ const descriptions: Partial<Record<ShadcnComponentName, string>> = {
   Stack: "Vertical flex container. `gap` is a spacing step (1-8); also accepts `class`.",
   Row: "Horizontal flex container with centered items. `gap`, `wrap`, `class`.",
   Form: "Native <form> wrapper. Bind `on.submit` to run an action on submit (default is prevented). Put a Button with type \"submit\" inside.",
+  Group: "Renders its children with no wrapper element. Use as a `repeat` container so repeated children stay direct children of the parent (e.g. pagination items).",
   Icon: "Lucide icon by name. `name`: Trash2 | Eye | Search | Check | X | Plus | RefreshCw | Loader2. Use `class` for size/color.",
 
   Button: "Button. `variant`: default | destructive | outline | secondary | ghost | link; `size`: default | sm | lg | icon. Put a Text child inside for the label.",
@@ -131,3 +133,20 @@ export const catalog = schema.createCatalog({
 });
 
 export type AppCatalog = typeof catalog;
+
+/**
+ * `$computed` functions used by the spec (e.g. `{ "$computed": "pageOffset" }`).
+ * json-render reads these from the `JSONUIProvider` `functions` prop, not from
+ * the catalog, so wire them up where the provider is rendered.
+ */
+export const functions: Record<string, ComputedFunction> = {
+  pageOffset: ({ page, pageSize }) => {
+    const size = Number(pageSize) || 10;
+    return (Math.max(1, Number(page) || 1) - 1) * size;
+  },
+  pageList: ({ total, pageSize }) => {
+    const size = Number(pageSize) || 10;
+    const count = Math.max(1, Math.ceil((Number(total) || 0) / size));
+    return Array.from({ length: count }, (_, i) => ({ page: i + 1, skip: i * size }));
+  },
+};

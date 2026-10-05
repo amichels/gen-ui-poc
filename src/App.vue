@@ -2,7 +2,7 @@
 import { computed, ref, shallowRef } from "vue";
 import { compileSpecStream, createStateStore, type Spec } from "@json-render/core";
 import { defineRegistry, JSONUIProvider, Renderer } from "@json-render/vue";
-import { catalog } from "./lib/catalog";
+import { catalog, functions } from "./lib/catalog";
 import { createActions, createComponents } from "./lib/registry";
 import { specJsonl } from "./lib/spec";
 
@@ -65,7 +65,7 @@ const { registry } = defineRegistry(catalog, { components, actions });
 
 <template>
   <main class="dark" style="background-color: black">
-    <JSONUIProvider :registry="registry" :store="store" :handlers="actions">
+    <JSONUIProvider :registry="registry" :store="store" :handlers="actions" :functions="functions">
       <Renderer :spec="activeSpec" :registry="registry" />
     </JSONUIProvider>
 

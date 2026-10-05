@@ -69,6 +69,7 @@ const forwardedEvents = [
   "value-change",
   "update:modelValue",
   "update:open",
+  "update:page",
   "submit",
 ];
 

@@ -140,7 +140,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Form, Heading, Icon, Row, Stack, Text } from "@/components/primitives";
+import { Form, Group, Heading, Icon, Row, Stack, Text } from "@/components/primitives";
 
 /**
  * Every component type exposed to the JSON-render catalog, mapped to the
@@ -156,6 +156,7 @@ export const shadcnComponents = {
   Stack,
   Row,
   Form,
+  Group,
 
   // shadcn-vue components.
   Accordion,
