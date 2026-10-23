@@ -10,6 +10,10 @@
     "check-types": "vue-tsc --noEmit"
   },
   "dependencies": {
+    "@ag-ui/client": "^1.0.2",
+    "@ai-sdk/openai": "^3.0.130",
+    "@copilotkit/core": "^1.79.1",
+    "@copilotkit/runtime": "^1.79.1",
     "@json-render/core": "0.21.0",
     "@json-render/vue": "0.21.0",
     "@lucide/vue": "^1.52.0",
@@ -17,6 +21,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "reka-ui": "^2.10.5",
+    "rxjs": "^7.8.1",
     "tailwind-merge": "^3.7.0",
     "vue": "^3.5.0",
     "zod": "4.3.6"

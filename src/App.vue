@@ -1,116 +1,37 @@
 <script setup lang="ts">
-import { computed, ref, shallowRef } from "vue";
-import { compileSpecStream, createStateStore, type Spec } from "@json-render/core";
-import { defineRegistry, JSONUIProvider, Renderer } from "@json-render/vue";
-import { catalog, functions } from "./lib/catalog";
-import { createActions, createComponents } from "./lib/registry";
-import { specJsonl } from "./lib/spec";
+import { useLocalStorage } from "@vueuse/core";
+import { Sparkles, Trash2 } from "@lucide/vue";
+import { Button } from "@/components/ui/button";
+import ChatSidebar from "@/components/ChatSidebar.vue";
+import GeneratedPage from "@/components/GeneratedPage.vue";
+import { clearCurrentSpec, currentSpec, specRevision } from "@/lib/copilot";
 
-const compileSpec = (source: string) => {
-  source.split("\n").forEach((line, index) => {
-    if (!line.trim()) return;
-
-    try {
-      JSON.parse(line);
-    } catch {
-      throw new Error(`Line ${index + 1} is not valid JSON`);
-    }
-  });
-
-  return compileSpecStream(source) as unknown as Spec;
-};
-
-const specSource = ref(specJsonl);
-const activeSpec = shallowRef<Spec>(compileSpec(specSource.value));
-const store = createStateStore(activeSpec.value.state ?? {});
-const specError = ref("");
-const specLineCount = computed(
-  () => (specSource.value.match(/\n/g)?.length ?? 0) + 1,
-);
-
-const applySpec = (source = specSource.value) => {
-  specSource.value = source;
-  try {
-    const spec = compileSpec(source);
-    store.update(
-      Object.fromEntries(
-        Object.entries(spec.state ?? {}).map(([key, value]) => [`/${key}`, value]),
-      ),
-    );
-    activeSpec.value = spec;
-    specError.value = "";
-  } catch (error) {
-    specError.value =
-      error instanceof Error ? error.message : "Unable to parse JSONL";
-  }
-};
-
-const applyTextareaSpec = (event: FocusEvent) => {
-  applySpec((event.target as HTMLTextAreaElement).value);
-};
-
-const loadSpecFile = async (event: Event) => {
-  const input = event.target as HTMLInputElement;
-  const file = input.files?.[0];
-  if (!file) return;
-
-  applySpec(await file.text());
-  input.value = "";
-};
-
-const actions = createActions(store);
-const components = createComponents(store);
-const { registry } = defineRegistry(catalog, { components, actions });
+const sidebarOpen = useLocalStorage("gen-ui-poc:sidebar-open", true);
 </script>
 
 <template>
-  <main class="dark" style="background-color: black">
-    <JSONUIProvider :registry="registry" :store="store" :handlers="actions" :functions="functions">
-      <Renderer :spec="activeSpec" :registry="registry" />
-    </JSONUIProvider>
+  <main class="dark bg-background text-foreground min-h-screen" style="background-color: black">
+    <div class="transition-[padding] duration-200" :class="{ 'sm:pr-96': sidebarOpen }">
+      <template v-if="currentSpec">
+        <div class="flex justify-end px-4 pt-4">
+          <Button variant="ghost" size="sm" @click="clearCurrentSpec">
+            <Trash2 />
+            Clear UI
+          </Button>
+        </div>
+        <GeneratedPage :key="specRevision" :spec="currentSpec" />
+      </template>
 
-    <!-- <section class="source-panel" aria-labelledby="source-title">
-      <div class="section-heading">
-        <div>
-          <p class="eyebrow">SPEC SOURCE</p>
-          <h2 id="source-title">One JSON patch per line</h2>
-        </div>
-        <div class="source-actions">
-          <label class="load-spec-button">
-            Load JSONL
-            <input
-              class="file-input"
-              type="file"
-              accept=".jsonl,.json,.txt,application/json,text/plain"
-              @change="loadSpecFile"
-            />
-          </label>
-          <span
-            class="status-pill"
-            :class="{ 'status-pill--error': specError }"
-            role="status"
-          >
-            {{ specError ? "Invalid JSONL" : "Updates on blur" }}
-          </span>
-        </div>
-      </div>
-      <p class="source-hint">
-        Paste a spec or load a .jsonl file. The editor has no character limit;
-        changes apply when you leave the field.
-        <span>{{ specSource.length.toLocaleString() }} characters · {{ specLineCount.toLocaleString() }} lines</span>
-      </p>
-      <textarea
-        :value="specSource"
-        class="source-input"
-        aria-labelledby="source-title"
-        :aria-invalid="Boolean(specError)"
-        :aria-describedby="specError ? 'spec-error' : undefined"
-        @blur="applyTextareaSpec"
-        spellcheck="false"
-      />
-      <p v-if="specError" id="spec-error" class="source-error">
-        {{ specError }}
-      </p>
-    </section> -->
+      <section v-else class="flex min-h-screen flex-col items-center justify-center gap-4 p-6 text-center">
+        <Sparkles class="text-muted-foreground size-10" />
+        <h1 class="text-2xl font-semibold">Nothing here yet</h1>
+        <p class="text-muted-foreground max-w-md">
+          Ask the assistant to build a UI and it will appear on this page.
+        </p>
+        <Button v-if="!sidebarOpen" @click="sidebarOpen = true">Open assistant</Button>
+      </section>
+    </div>
+
+    <ChatSidebar v-model:open="sidebarOpen" />
   </main>
 </template>
