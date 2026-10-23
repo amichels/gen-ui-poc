@@ -1,15 +1,17 @@
 <script setup lang="ts">
-import type { HTMLAttributes } from "vue";
+import { computed, type HTMLAttributes } from "vue";
 import { cn } from "@/lib/utils";
 
 const props = withDefaults(
   defineProps<{
     text?: string | number | null;
-    level?: 1 | 2 | 3 | 4;
+    level?: 1 | 2 | 3 | 4 | "1" | "2" | "3" | "4";
     class?: HTMLAttributes["class"];
   }>(),
   { level: 2 },
 );
+
+const normalizedLevel = computed(() => Number(props.level));
 
 const sizes: Record<number, string> = {
   1: "text-3xl font-bold tracking-tight text-foreground",
@@ -20,7 +22,7 @@ const sizes: Record<number, string> = {
 </script>
 
 <template>
-  <component :is="`h${level}`" :class="cn(sizes[level], props.class)">
+  <component :is="`h${normalizedLevel}`" :class="cn(sizes[normalizedLevel], props.class)">
     <template v-if="text !== undefined && text !== null">{{ text }}</template>
     <slot v-else />
   </component>

@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 
 const props = withDefaults(
   defineProps<{
-    gap?: number;
+    gap?: number | string;
     wrap?: boolean;
     class?: HTMLAttributes["class"];
   }>(),
@@ -15,7 +15,7 @@ const props = withDefaults(
 <template>
   <div
     :class="cn('flex flex-row items-center', props.wrap && 'flex-wrap', props.class)"
-    :style="{ gap: `${props.gap * 0.25}rem` }"
+    :style="{ gap: `${Number(props.gap) * 0.25}rem` }"
   >
     <slot />
   </div>
