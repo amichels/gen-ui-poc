@@ -15,13 +15,15 @@ const props = withDefaults(defineProps<PaginationListItemProps & {
   size: "icon",
 })
 
-const delegatedProps = reactiveOmit(props, "class", "size", "isActive")
+const delegatedProps = reactiveOmit(props, "class", "size", "isActive", "value")
 </script>
 
 <template>
   <PaginationListItem
+    v-if="Number.isFinite(Number(props.value))"
     data-slot="pagination-item"
     v-bind="delegatedProps"
+    :value="Number(props.value)"
     :class="cn(
       buttonVariants({
         variant: isActive ? 'outline' : 'ghost',

@@ -5,9 +5,11 @@ import { reactiveOmit } from "@vueuse/core"
 import { PaginationRoot, useForwardPropsEmits } from "reka-ui"
 import { cn } from "@/lib/utils"
 
-const props = defineProps<PaginationRootProps & {
+const props = withDefaults(defineProps<PaginationRootProps & {
   class?: HTMLAttributes["class"]
-}>()
+}>(), {
+  itemsPerPage: 10,
+})
 const emits = defineEmits<PaginationRootEmits>()
 
 const delegatedProps = reactiveOmit(props, "class")

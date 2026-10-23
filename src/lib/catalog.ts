@@ -97,7 +97,7 @@ const descriptions: Partial<Record<ShadcnComponentName, string>> = {
   DropdownMenuLabel: "Menu section label.",
   DropdownMenuSeparator: "Menu divider.",
   Breadcrumb: "Breadcrumb root. Compose BreadcrumbList > BreadcrumbItem > BreadcrumbLink/BreadcrumbPage.",
-  Pagination: "Pagination root. Compose PaginationContent > PaginationItem with PaginationPrevious/Next.",
+  Pagination: "Pagination root. Set `itemsPerPage` and `total`; compose PaginationContent with PaginationPrevious, PaginationItem entries (each requires a numeric `value`), and PaginationNext as siblings. Do not use PaginationItem for Previous/Next controls.",
 };
 
 const components = Object.fromEntries(
