@@ -59,6 +59,10 @@ copilot.addContext({
       "Pass the spec to renderUI as one JSON object {root, elements, state}. If renderUI is unavailable, put that single JSON object in your reply instead (no code fences, no JSONL).",
       "Available $computed functions: pageOffset({page, pageSize}) returns the skip offset; pageList({total, pageSize}) returns [{page, skip}] for pagination.",
       "Use the `class` prop with Tailwind classes for layout and spacing.",
+      "Supported `on` event names: press or click (buttons, menu items), enter (Input/Textarea Enter key), submit (Form), change, update:modelValue, update:open, update:page, and mount. `mount` fires once when the element renders; use it to load data on page load.",
+      "`watch` does NOT fire on initial render, so initial data loading must use on.mount (or a button press), never watch alone.",
+      'To call an HTTP endpoint use the fetchData action, e.g. {"on":{"mount":{"action":"fetchData","params":{"url":"https://example.com/api/items","statePath":"/items","loadingPath":"/loading","errorPath":"/error"}}}}. Then display the response with $state / repeat. Use {"$template":"https://...?q=${/query}"} for URLs built from state. Initialize statePath, loadingPath and errorPath in state.',
+      "Only use action names listed under AVAILABLE ACTIONS (fetchData, setState, pushState, removeState); never invent others such as httpRequest.",
     ],
   }),
 });

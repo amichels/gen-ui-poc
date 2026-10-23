@@ -5,9 +5,37 @@ import {
   validateSpec,
   type Spec,
 } from "@json-render/core";
+import { schema as vueSchema } from "@json-render/vue/schema";
 import { catalog } from "./catalog";
 
 const STORAGE_KEY = "gen-ui-poc:spec";
+
+const knownActions = new Set([...catalog.actionNames, ...(vueSchema.builtInActions ?? []).map((a) => a.name)]);
+const supportedEvents = new Set([
+  "press", "click", "change", "input", "select", "value-change", "submit", "enter", "mount",
+  "update:modelValue", "update:open", "update:page",
+]);
+
+const bindingIssues = (spec: Spec) => {
+  const issues: string[] = [];
+  const checkAction = (key: string, where: string, binding: unknown) => {
+    for (const item of Array.isArray(binding) ? binding : [binding]) {
+      const action = (item as { action?: unknown } | null)?.action;
+      if (typeof action !== "string" || !knownActions.has(action)) {
+        issues.push(`${key}.${where}: unknown action "${String(action)}" (use one of ${[...knownActions].join(", ")})`);
+      }
+    }
+  };
+  for (const [key, element] of Object.entries(spec.elements ?? {})) {
+    const { on, watch } = element as { on?: Record<string, unknown>; watch?: Record<string, unknown> };
+    for (const [event, binding] of Object.entries(on ?? {})) {
+      if (!supportedEvents.has(event)) issues.push(`${key}.on.${event}: unsupported event (use one of ${[...supportedEvents].join(", ")})`);
+      checkAction(key, `on.${event}`, binding);
+    }
+    for (const [path, binding] of Object.entries(watch ?? {})) checkAction(key, `watch[${path}]`, binding);
+  }
+  return issues;
+};
 
 type ParseResult = { ok: true; spec: Spec } | { ok: false; error: string };
 
@@ -42,6 +70,9 @@ export const parseSpec = (input: unknown): ParseResult => {
     const issues = schema.error?.issues.map((issue) => `${issue.path.join(".")}: ${issue.message}`) ?? [];
     return { ok: false, error: `Spec does not match the catalog:\n${issues.join("\n")}` };
   }
+
+  const bindings = bindingIssues(spec);
+  if (bindings.length) return { ok: false, error: `Invalid event bindings:\n${bindings.join("\n")}` };
 
   return { ok: true, spec };
 };

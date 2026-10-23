@@ -106,6 +106,10 @@ export const createComponents = (_store: StateStore): Components<AppCatalog> =>
           }
         }
 
+        // json-render's generated prompt teaches `on.press`; treat it as a click.
+        const press = on("press");
+        if (press.bound && !eventHandlers.onClick) eventHandlers.onClick = press.emit;
+
         // `on.enter` fires only when the user presses Enter.
         const enter = on("enter");
         if (enter.bound) {
