@@ -5,6 +5,9 @@ import { z } from "zod";
 import { catalog } from "./catalog";
 import { clearSpec, loadSpec, parseSpec, saveSpec } from "./spec-storage";
 
+export const RENDER_TOOL = "renderUI";
+export const SNAPSHOT_TOOL = "AGUISendStateSnapshot";
+
 export const AGENT_ID = "default";
 
 export const currentSpec = shallowRef<Spec | null>(loadSpec());
@@ -19,10 +22,16 @@ const setSpec = (spec: Spec | null) => {
 
 export const clearCurrentSpec = () => setSpec(null);
 
+export const applySpec = (input: unknown) => {
+  const result = parseSpec(input);
+  if (result.ok) setSpec(result.spec);
+  return result;
+};
+
 export const copilot = new CopilotKitCore({ runtimeUrl: "/api/copilotkit" });
 
 copilot.addTool({
-  name: "renderUI",
+  name: RENDER_TOOL,
   description:
     "Render a json-render UI on the main page, replacing whatever is currently shown. Pass one complete spec object.",
   parameters: z.object({
@@ -36,9 +45,8 @@ copilot.addTool({
   }),
   followUp: true,
   handler: async ({ spec }) => {
-    const result = parseSpec(spec);
+    const result = applySpec(spec);
     if (!result.ok) return `Validation failed, nothing was rendered. Fix these issues and call renderUI again:\n${result.error}`;
-    setSpec(result.spec);
     return "Rendered on the page.";
   },
 });
@@ -48,7 +56,7 @@ copilot.addContext({
   value: catalog.prompt({
     system: "Reference for building specs passed to the renderUI tool.",
     customRules: [
-      "Pass the spec to renderUI as one JSON object {root, elements, state}; never output JSONL in chat.",
+      "Pass the spec to renderUI as one JSON object {root, elements, state}. If renderUI is unavailable, put that single JSON object in your reply instead (no code fences, no JSONL).",
       "Available $computed functions: pageOffset({page, pageSize}) returns the skip offset; pageList({total, pageSize}) returns [{page, skip}] for pagination.",
       "Use the `class` prop with Tailwind classes for layout and spacing.",
     ],

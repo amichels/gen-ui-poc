@@ -4,11 +4,13 @@ import { Loader2, MessageSquare, Send, Square, X } from "@lucide/vue";
 import type { Message } from "@ag-ui/client";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { useCopilotChat } from "@/composables/useCopilotChat";
+import { useCopilotChat, textOf } from "@/composables/useCopilotChat";
+import { RENDER_TOOL, SNAPSHOT_TOOL } from "@/lib/copilot";
+import { splitSpecText } from "@/lib/spec-text";
 
 const open = defineModel<boolean>("open", { required: true });
 
-const { messages, isRunning, error, send, stop } = useCopilotChat();
+const { messages, isRunning, error, fallbackResults, send, stop } = useCopilotChat();
 const draft = ref("");
 const transcript = ref<HTMLElement>();
 
@@ -16,12 +18,15 @@ type ChatEntry =
   | { id: string; kind: "text"; role: "user" | "assistant"; text: string }
   | { id: string; kind: "status"; text: string; pending: boolean };
 
-const textOf = (content: unknown) =>
-  typeof content === "string"
-    ? content
-    : Array.isArray(content)
-      ? content.map((part) => (part?.type === "text" ? part.text : "")).join("")
-      : "";
+const fallbackStatus = (id: string, pending: boolean): ChatEntry => {
+  const result = fallbackResults.value[id];
+  return {
+    id: `${id}-spec`,
+    kind: "status",
+    pending: !result && pending,
+    text: !result ? (pending ? "Building UI…" : "UI was not rendered") : result.ok ? "Rendered UI on the page" : `Spec was invalid: ${result.error}`,
+  };
+};
 
 const toEntries = (list: Message[]): ChatEntry[] => {
   const results = new Map(
@@ -31,10 +36,16 @@ const toEntries = (list: Message[]): ChatEntry[] => {
     if (m.role === "user") return [{ id: m.id, kind: "text", role: "user", text: textOf(m.content) }];
     if (m.role !== "assistant") return [];
     const entries: ChatEntry[] = [];
-    const text = textOf(m.content).trim();
-    if (text) entries.push({ id: m.id, kind: "text", role: "assistant", text });
+    const { before, after, source, partial } = splitSpecText(textOf(m.content));
+    if (before) entries.push({ id: m.id, kind: "text", role: "assistant", text: before });
+    if (source || partial) entries.push(fallbackStatus(m.id, isRunning.value));
+    if (after) entries.push({ id: `${m.id}-after`, kind: "text", role: "assistant", text: after });
     for (const call of m.toolCalls ?? []) {
-      if (call.function.name !== "renderUI") continue;
+      if (call.function.name === SNAPSHOT_TOOL) {
+        if (!source && !partial) entries.push(fallbackStatus(m.id, isRunning.value));
+        continue;
+      }
+      if (call.function.name !== RENDER_TOOL) continue;
       const result = results.get(call.id);
       entries.push({
         id: call.id,
